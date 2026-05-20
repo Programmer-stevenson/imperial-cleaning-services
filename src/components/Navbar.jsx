@@ -43,6 +43,7 @@ export default function Navbar() {
   }, [menuOpen])
 
   const links = [
+    { label: 'Home',         href: '#hero' },
     { label: 'Services',     href: '#services' },
     { label: 'About',        href: '#about' },
     { label: 'How It Works', href: '#process' },
@@ -65,7 +66,11 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-24">
           {/* Logo */}
-          <a href="#hero" className="flex items-center gap-4 group">
+          <a
+            href="#hero"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+            className="flex items-center gap-4 group"
+          >
             <img
               src="/logo-blue.jpg"
               alt="Imperial Cleaning Services"
@@ -74,7 +79,7 @@ export default function Navbar() {
             <div className="hidden sm:flex flex-col leading-none">
               <span className="font-display text-[20px] text-navy tracking-tight">Imperial Cleaning</span>
               <span className="font-mono text-[9px] tracking-[0.25em] text-navy/50 uppercase mt-1.5">
-                Las Vegas · Since 2014
+                Las Vegas · Since 2025
               </span>
             </div>
           </a>
@@ -85,6 +90,12 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => {
+                  if (link.href === '#hero') {
+                    e.preventDefault()
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                  }
+                }}
                 className="nav-link relative text-[14px] font-medium text-navy/70 hover:text-navy transition-colors"
               >
                 {link.label}
@@ -134,7 +145,13 @@ export default function Navbar() {
                   <a
                     key={link.label}
                     href={link.href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(e) => {
+                      if (link.href === '#hero') {
+                        e.preventDefault()
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                      }
+                      setMenuOpen(false)
+                    }}
                     className="font-display text-2xl text-navy hover:text-imperialBlue transition-colors"
                   >
                     {link.label}

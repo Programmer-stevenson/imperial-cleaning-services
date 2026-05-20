@@ -9,8 +9,6 @@ export default function Hero() {
   const opacity = useTransform(scrollY, [0, 650, 950], [1, 1, 0])
 
   // ── Intro video state ──────────────────────────────────────────────
-  // Plays on every refresh. We still honor prefers-reduced-motion
-  // so people with that accessibility setting on aren't forced into it.
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === 'undefined') return false
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -18,6 +16,10 @@ export default function Hero() {
   })
 
   const videoRef = useRef(null)
+
+  // ── Headline glow sweep ────────────────────────────────────────────
+  // A minty-green shimmer sweeps across the headline once, on load.
+  const [glow, setGlow] = useState(false)
 
   // Lock scroll while the intro is on top of the page
   useEffect(() => {
@@ -27,12 +29,19 @@ export default function Hero() {
     }
   }, [showIntro])
 
-  // Safety: even if the `onEnded` event doesn't fire (some mobile quirks),
-  // we hide the intro after the video's natural length + a small buffer.
+  // Safety: hide the intro after the video's natural length + a buffer.
   useEffect(() => {
     if (!showIntro) return
     const t = setTimeout(() => finishIntro(), 8000)
     return () => clearTimeout(t)
+  }, [showIntro])
+
+  // Once the intro is gone, trigger the sweep, then clear it after ~3s.
+  useEffect(() => {
+    if (showIntro) return
+    const onTimer  = setTimeout(() => setGlow(true), 500)
+    const offTimer = setTimeout(() => setGlow(false), 3600)
+    return () => { clearTimeout(onTimer); clearTimeout(offTimer) }
   }, [showIntro])
 
   const finishIntro = () => {
@@ -41,6 +50,51 @@ export default function Hero() {
 
   return (
     <>
+      {/* Component-scoped keyframes for the minty sweep */}
+      <style>{`
+        @keyframes mintSweep {
+          0%   { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+        .headline-sweep {
+          background-image: linear-gradient(
+            100deg,
+            #ffffff 0%,
+            #ffffff 38%,
+            #5eead4 47%,
+            #2dd4a7 50%,
+            #5eead4 53%,
+            #ffffff 62%,
+            #ffffff 100%
+          );
+          background-size: 200% 100%;
+          background-position: 200% 0;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+        .headline-sweep.is-sweeping {
+          animation: mintSweep 3s ease-in-out forwards;
+          filter: drop-shadow(0 0 18px rgba(45,212,167,0.55))
+                  drop-shadow(0 0 42px rgba(45,212,167,0.35));
+          transition: filter 0.6s ease-in-out;
+        }
+        .headline-sweep:not(.is-sweeping) {
+          filter: drop-shadow(0 0 0 rgba(45,212,167,0));
+          transition: filter 1s ease-in-out;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .headline-sweep, .headline-sweep.is-sweeping {
+            animation: none;
+            background: none;
+            -webkit-text-fill-color: #ffffff;
+            color: #ffffff;
+            filter: none;
+          }
+        }
+      `}</style>
+
       {/* ─────────────────────────────────────────────────────────────
           Intro video — full-screen splash, fades out into the hero
           ───────────────────────────────────────────────────────────── */}
@@ -140,17 +194,18 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Headline */}
+          {/* Headline — minty sweep glides across once on load */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE_OUT, delay: showIntro ? 0 : 0.35 }}
-            className="font-display font-light text-white leading-[0.95] tracking-tightest
-                       text-5xl md:text-7xl lg:text-8xl mb-8"
+            className={`headline-sweep ${glow ? 'is-sweeping' : ''}
+                        font-display font-light leading-[0.95] tracking-tightest
+                        text-5xl md:text-7xl lg:text-8xl mb-8`}
           >
             Excellence in
             <br />
-            <span className="ital-emph text-royal-300">Every Corner.</span>
+            <span className="ital-emph">Every Corner.</span>
           </motion.h1>
 
           {/* Subtext */}

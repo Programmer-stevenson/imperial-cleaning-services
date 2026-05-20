@@ -25,12 +25,12 @@ export default {
       },
       backgroundSize: { 'grid':'40px 40px','grid-lg':'64px 64px' },
       animation: {
-        'float':'float 7s ease-in-out infinite',
+        'float':'float 5s ease-in-out infinite',
         'marquee':'marquee 40s linear infinite',
         'pulse-slow':'pulseSlow 3s ease-in-out infinite',
       },
       keyframes: {
-        float:   { '0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-12px)'} },
+        float:   { '0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-18px)'} },
         marquee: { '0%':{transform:'translateX(0)'},'100%':{transform:'translateX(-50%)'} },
         pulseSlow:{ '0%,100%':{opacity:'0.4'},'50%':{opacity:'0.85'} },
       },
