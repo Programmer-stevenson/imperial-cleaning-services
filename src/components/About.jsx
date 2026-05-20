@@ -4,10 +4,10 @@ import { Shield, ShieldCheck, BadgeCheck, Leaf, ArrowRight, Phone } from 'lucide
 import { Reveal, fadeUp } from './motion'
 
 const pillars = [
-  { icon: Shield,      title: 'Bonded & Insured',  desc: '$2M general liability, $1M workers&rsquo; comp on every job.' },
-  { icon: ShieldCheck, title: 'Vetted Crews',      desc: 'Background checks, E-Verify, in-house onboarding before any assignment.' },
-  { icon: BadgeCheck,  title: 'Quality Audited',   desc: 'Supervisor walk-through and digital checklist signed at every closeout.' },
-  { icon: Leaf,        title: 'EPA-Safer Products',desc: 'Hospital-grade disinfectants where required; green chemistry by default.' },
+  { icon: Shield,      title: 'Licensed & Insured', desc: 'Fully licensed, bonded, and insured — your home or business is protected on every visit.' },
+  { icon: ShieldCheck, title: 'Trusted Cleaners',   desc: 'Background-checked, carefully trained, and the same friendly faces each time.' },
+  { icon: BadgeCheck,  title: 'Quality Checked',    desc: 'A final walk-through every visit, so nothing gets missed before we leave.' },
+  { icon: Leaf,        title: 'Eco-Friendly',       desc: 'Safe, family- and pet-friendly products — stronger options available on request.' },
 ]
 
 export default function About() {
@@ -21,14 +21,13 @@ export default function About() {
             <div className="absolute inset-0 translate-x-4 translate-y-4 bg-imperialBlue/10 pointer-events-none" />
 
             <div className="relative overflow-hidden bg-navy">
-              <img src="/strat.png" alt="Imperial Cleaning · Las Vegas operations"
+              <img src="/strat.png" alt="Imperial Cleaning · Las Vegas"
                 className="w-full h-full object-contain crisp-edge"
                 style={{ aspectRatio: '3/2' }} />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent pointer-events-none" />
 
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                 <div>
-                  <div className="font-mono text-[10px] tracking-[0.3em] text-white/55 uppercase mb-2"></div>
                   <div className="font-display italic text-white text-2xl md:text-3xl leading-tight">
                     It&rsquo;s Going to <span className="text-royal-300">Shine.</span>
                   </div>
@@ -40,7 +39,7 @@ export default function About() {
             </div>
 
             <div className="mt-6 flex items-center justify-between font-mono text-[10px] tracking-[0.2em] uppercase text-navy/45">
-              <span></span>
+              <span>Est. 2025</span>
               <span>Las Vegas, NV</span>
             </div>
           </motion.div>
@@ -48,22 +47,23 @@ export default function About() {
 
         <Reveal className="col-span-12 lg:col-span-7 lg:pt-4">
           <motion.div variants={fadeUp}>
-            <span className="index-label mb-6"></span>
+            <span className="index-label mb-6">About Imperial</span>
             <h2 className="h-section mt-5 mb-8 text-balance">
               Family-run.
-              <br /><span className="ital-emph text-imperialBlue">Hotel-trained.</span>
+              <br /><span className="ital-emph text-imperialBlue">Locally rooted.</span>
             </h2>
 
             <div className="space-y-5 text-navy/65 text-base md:text-lg leading-relaxed font-light max-w-2xl">
               <p>
-                Imperial Cleaning Services was started by a husband-and-wife team that came up through
-                Strip hotel housekeeping departments. The discipline — the room-by-room checklists,
-                the daily room-status audits, the cadence of a building that never closes — is the
-                foundation we now bring to every residence, office, and operator we serve.
+                Imperial Cleaning Services was founded in 2025 by a husband-and-wife team
+                right here in the Las Vegas Valley. We started this company on a simple idea —
+                that a cleaning service should be dependable, honest, and treat every space
+                with the same care we give our own home.
               </p>
               <p>
-                Eleven years in, we&rsquo;re the quiet team behind some of the Valley&rsquo;s most
-                demanding properties. Same crew leads since 2019. Same standard since day one.
+                We&rsquo;re new, and we&rsquo;re proud of it. That means every customer matters,
+                every job gets our full attention, and we&rsquo;re building our reputation one
+                spotless home and business at a time.
               </p>
             </div>
 

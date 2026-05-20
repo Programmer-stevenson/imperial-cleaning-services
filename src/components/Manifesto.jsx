@@ -28,10 +28,10 @@ export default function Manifesto() {
   // New business — these are commitments anyone can stand behind on day one,
   // not vanity metrics that would need years to be true.
   const promises = [
-    { icon: Clock,       title: '24-Hour Quotes',        desc: 'Reach out and we&rsquo;ll get you a clear, written price within a day.' },
-    { icon: ShieldCheck, title: 'Fully Insured',         desc: 'Licensed, bonded, and insured — your property is protected on every visit.' },
-    { icon: BadgeCheck,  title: 'Satisfaction Promise',  desc: 'Not happy with a spot? We come back and make it right, no charge.' },
-    { icon: Heart,       title: 'Locally Owned',         desc: 'A Las Vegas family business — you deal with the owners, not a call center.' },
+    { icon: Clock,       img: '/quotes.jpg',    title: '24-Hour Quotes',        desc: 'Reach out and we&rsquo;ll get you a clear, written price within a day.' },
+    { icon: ShieldCheck, img: '/insured.jpg',   title: 'Fully Insured',         desc: 'Licensed, bonded, and insured — your property is protected on every visit.' },
+    { icon: BadgeCheck,  img: '/satisfied.jpg', title: 'Satisfaction Promise',  desc: 'Not happy with a spot? We come back and make it right, no charge.' },
+    { icon: Heart,       img: '/local.jpg',     title: 'Locally Owned',         desc: 'A Las Vegas family business — you deal with the owners, not a call center.' },
   ]
   return (
     <section className="relative bg-paper py-24 md:py-32 border-b border-navy/10">
@@ -54,15 +54,31 @@ export default function Manifesto() {
           <motion.div variants={fadeUp}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-navy/10 border border-navy/10 mt-16 md:mt-24">
             {promises.map((p) => (
-              <div key={p.title} className="bg-paper p-7 md:p-9">
-                <div className="w-11 h-11 border border-navy/15 flex items-center justify-center mb-6">
-                  <p.icon size={18} className="text-imperialBlue" />
+              <div key={p.title} className="group bg-paper overflow-hidden">
+                {/* Photo header */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={p.img}
+                    alt={p.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
+                  {/* Navy wash so the photos blend with the site palette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/10 to-transparent" />
+                  {/* Icon badge */}
+                  <div className="absolute bottom-4 left-5 w-11 h-11 bg-paper border border-navy/10 flex items-center justify-center shadow-edit">
+                    <p.icon size={18} className="text-imperialBlue" />
+                  </div>
                 </div>
-                <div className="font-display text-navy text-2xl md:text-[26px] leading-tight mb-2">
-                  {p.title}
+
+                {/* Text */}
+                <div className="p-7 md:p-8">
+                  <div className="font-display text-navy text-2xl md:text-[26px] leading-tight mb-2">
+                    {p.title}
+                  </div>
+                  <p className="text-navy/55 text-sm leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: p.desc }} />
                 </div>
-                <p className="text-navy/55 text-sm leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: p.desc }} />
               </div>
             ))}
           </motion.div>

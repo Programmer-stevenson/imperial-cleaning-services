@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Phone, ChevronDown, ArrowRight, X } from 'lucide-react'
-import { EASE_OUT, CountUp } from './motion'
+import { EASE_OUT } from './motion'
 
 export default function Hero() {
   const { scrollY } = useScroll()
   const yFront  = useTransform(scrollY, [0, 800], [0, 60])
-  const opacity = useTransform(scrollY, [0, 500], [1, 0])
+  const opacity = useTransform(scrollY, [0, 650, 950], [1, 1, 0])
 
   // ── Intro video state ──────────────────────────────────────────────
   // Plays on every refresh. We still honor prefers-reduced-motion
@@ -97,7 +97,7 @@ export default function Hero() {
           ───────────────────────────────────────────────────────────── */}
       <section
         id="hero"
-        className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-navy-950 text-white isolate pt-24 pb-20"
+        className="relative min-h-[112svh] flex items-center justify-center overflow-hidden bg-navy-950 text-white isolate pt-28 pb-40"
       >
         {/* Atmosphere */}
         <div className="absolute inset-0 mesh-navy" />
@@ -169,7 +169,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE_OUT, delay: showIntro ? 0 : 0.65 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <a href="#contact" className="btn-light">
               Get Your Free Quote <ArrowRight size={14} />
@@ -178,29 +178,6 @@ export default function Hero() {
               <Phone size={14} /> (702) 418-4471
             </a>
           </motion.div>
-
-          {/* Stat bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: EASE_OUT, delay: showIntro ? 0 : 0.85 }}
-            className="grid grid-cols-3 gap-px bg-white/10 border border-white/10 max-w-3xl mx-auto"
-          >
-            {[
-              { v: 500, suffix: '+', label: 'Clients Served' },
-              { v: 10,  suffix: '+', label: 'Years in Service' },
-              { v: 100, suffix: '%', label: 'Satisfaction Rate' },
-            ].map((s) => (
-              <div key={s.label} className="bg-white/[0.03] py-7 px-6">
-                <div className="font-display font-light text-white text-4xl md:text-5xl leading-none">
-                  <CountUp to={s.v} suffix={s.suffix} duration={2.2} />
-                </div>
-                <div className="font-mono text-[10px] tracking-[0.25em] text-white/45 uppercase mt-3">
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
         </motion.div>
 
         {/* Scroll indicator */}
@@ -208,7 +185,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: showIntro ? 0 : 1.4, duration: 0.6 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, CheckCircle } from 'lucide-react'
+import { ArrowRight, CheckCircle, ChevronsRight } from 'lucide-react'
 import { Reveal, fadeUp, EASE_OUT } from './motion'
 
 const steps = [
@@ -41,6 +41,22 @@ export default function Standard() {
         <Reveal>
           <div className="grid grid-cols-12 gap-6 md:gap-8">
             <div className="col-span-12 lg:col-span-5">
+              {/* Mobile-only cue — tells users the phases are interactive */}
+              <div className="lg:hidden flex items-center justify-between mb-3 px-1">
+                <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-imperialBlue">
+                  <motion.span
+                    animate={{ x: [0, 6, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.6, ease: EASE_OUT }}
+                  >
+                    <ChevronsRight size={14} />
+                  </motion.span>
+                  Swipe or tap to explore
+                </span>
+                <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-navy/35">
+                  {active + 1} / {steps.length}
+                </span>
+              </div>
+
               <div className="flex lg:flex-col gap-px bg-navy/10 border border-navy/10 overflow-x-auto lg:overflow-visible">
                 {steps.map((s, i) => (
                   <button key={s.n}

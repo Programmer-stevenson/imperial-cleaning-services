@@ -37,7 +37,7 @@ export default function Contact() {
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid grid-cols-12 gap-8 md:gap-16 relative">
         <Reveal className="col-span-12 lg:col-span-5">
           <motion.div variants={fadeUp}>
-            <span className="index-label mb-6">010 · Engage</span>
+            <span className="index-label mb-6">Engage</span>
             <h2 className="h-section mt-5 mb-8 text-balance">
               Request a
               <br /><span className="ital-emph text-imperialBlue">scoped quote.</span>
