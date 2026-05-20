@@ -59,18 +59,24 @@ export default function Navbar() {
     <>
       {/* Fixed overlay — floats above the page so the transparent
           nav reveals whatever section is behind it (the dark hero). */}
-      <div className="fixed top-0 left-0 w-full z-50">
+      <motion.div
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: EASE_OUT }}
+        className="fixed top-0 left-0 w-full z-50"
+      >
         <UtilityBar />
-        <motion.nav
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
-          className={`w-full transition-all duration-300 ${
-            solid
-              ? 'bg-paper/95 backdrop-blur-xl border-b border-navy/10 shadow-sm'
-              : 'bg-transparent border-b border-transparent'
-          }`}
-        >
+        <nav className="relative w-full">
+          {/* Animated background layer — fades in/out independently of
+              the nav's own transform, so the transition is reliable
+              on mobile (where Framer transforms can clobber CSS). */}
+          <div
+            aria-hidden
+            className={`absolute inset-0 -z-10 bg-paper/95 backdrop-blur-xl border-b shadow-sm
+                        transition-opacity duration-300 ease-in-out ${
+              solid ? 'opacity-100 border-navy/10' : 'opacity-0 border-transparent'
+            }`}
+          />
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-24">
           {/* Logo — swaps white ⇄ blue with the scroll state */}
           <a
@@ -212,8 +218,8 @@ export default function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.nav>
-      </div>
+      </nav>
+      </motion.div>
     </>
   )
 }
