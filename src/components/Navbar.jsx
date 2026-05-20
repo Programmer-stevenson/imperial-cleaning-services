@@ -1,0 +1,165 @@
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Phone, Clock, Menu, X, ArrowRight, MapPin } from 'lucide-react'
+import { EASE_OUT } from './motion'
+
+/* Slim top strip — phone, hours, location */
+function UtilityBar() {
+  return (
+    <div className="hidden md:block bg-navy text-white/70 text-[11px]">
+      <div className="max-w-7xl mx-auto px-6 h-9 flex items-center justify-between">
+        <div className="flex items-center gap-6">
+          <span className="flex items-center gap-2">
+            <MapPin size={11} className="text-royal-300" />
+            Serving the Las Vegas Valley
+          </span>
+          <span className="hidden lg:flex items-center gap-2 text-white/50">
+            <Clock size={11} /> Mon–Sun · 7:00 AM – 8:00 PM
+          </span>
+        </div>
+        <div className="flex items-center gap-5">
+          <span className="text-white/50">Licensed · Bonded · Insured</span>
+          <a href="tel:7024184471" className="flex items-center gap-2 hover:text-white transition-colors">
+            <Phone size={11} /> (702) 418-4471
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 24)
+    window.addEventListener('scroll', h, { passive: true }); h()
+    return () => window.removeEventListener('scroll', h)
+  }, [])
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
+  const links = [
+    { label: 'Services',     href: '#services' },
+    { label: 'About',        href: '#about' },
+    { label: 'How It Works', href: '#process' },
+    { label: 'Reviews',      href: '#testimonials' },
+    { label: 'Contact',      href: '#contact' },
+  ]
+
+  return (
+    <>
+      <UtilityBar />
+      <motion.nav
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: EASE_OUT }}
+        className={`sticky top-0 w-full z-50 transition-all duration-300 ${
+          scrolled
+            ? 'bg-paper/95 backdrop-blur-xl border-b border-navy/10 shadow-sm'
+            : 'bg-paper/80 backdrop-blur border-b border-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-24">
+          {/* Logo */}
+          <a href="#hero" className="flex items-center gap-4 group">
+            <img
+              src="/logo-blue.jpg"
+              alt="Imperial Cleaning Services"
+              className="h-16 w-16 md:h-20 md:w-20 object-cover rounded-full ring-1 ring-navy/10 group-hover:ring-imperialBlue/40 transition-all"
+            />
+            <div className="hidden sm:flex flex-col leading-none">
+              <span className="font-display text-[20px] text-navy tracking-tight">Imperial Cleaning</span>
+              <span className="font-mono text-[9px] tracking-[0.25em] text-navy/50 uppercase mt-1.5">
+                Las Vegas · Since 2014
+              </span>
+            </div>
+          </a>
+
+          {/* Desktop links */}
+          <div className="hidden lg:flex items-center gap-8">
+            {links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="nav-link relative text-[14px] font-medium text-navy/70 hover:text-navy transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Right side — phone + CTA */}
+          <div className="hidden md:flex items-center gap-5">
+            <a
+              href="tel:7024184471"
+              className="hidden lg:flex items-center gap-2 text-navy font-medium text-sm hover:text-imperialBlue transition-colors"
+            >
+              <Phone size={14} /> (702) 418-4471
+            </a>
+            <a
+              href="#contact"
+              className="group inline-flex items-center gap-2 bg-navy text-white text-[12px] font-semibold tracking-wider uppercase px-5 py-3 hover:bg-imperialBlue transition-colors"
+            >
+              Request a Quote
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+            </a>
+          </div>
+
+          {/* Mobile toggle */}
+          <button
+            aria-label="Toggle menu"
+            className="md:hidden w-10 h-10 flex items-center justify-center text-navy"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: EASE_OUT }}
+              className="md:hidden bg-paper border-t border-navy/10 overflow-hidden"
+            >
+              <div className="px-6 py-7 flex flex-col gap-5">
+                {links.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="font-display text-2xl text-navy hover:text-imperialBlue transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+                <div className="pt-4 mt-2 border-t border-navy/10 flex flex-col gap-3">
+                  <a
+                    href="tel:7024184471"
+                    className="flex items-center justify-center gap-2 border border-navy/20 text-navy font-semibold py-3.5 hover:bg-navy hover:text-white transition-colors"
+                  >
+                    <Phone size={14} /> (702) 418-4471
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="bg-navy text-white text-center text-[12px] font-semibold tracking-wider uppercase py-4 hover:bg-imperialBlue transition-colors inline-flex items-center justify-center gap-2"
+                  >
+                    Request a Quote <ArrowRight size={13} />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </>
+  )
+}
