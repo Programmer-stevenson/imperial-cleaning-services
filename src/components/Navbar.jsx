@@ -51,34 +51,59 @@ export default function Navbar() {
     { label: 'Contact',      href: '#contact' },
   ]
 
+  // When the menu is open on mobile, treat the bar as "solid" so its
+  // contents stay readable against the paper-colored dropdown.
+  const solid = scrolled || menuOpen
+
   return (
     <>
-      <UtilityBar />
-      <motion.nav
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: EASE_OUT }}
-        className={`sticky top-0 w-full z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-paper/95 backdrop-blur-xl border-b border-navy/10 shadow-sm'
-            : 'bg-paper/80 backdrop-blur border-b border-transparent'
-        }`}
-      >
+      {/* Fixed overlay — floats above the page so the transparent
+          nav reveals whatever section is behind it (the dark hero). */}
+      <div className="fixed top-0 left-0 w-full z-50">
+        <UtilityBar />
+        <motion.nav
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: EASE_OUT }}
+          className={`w-full transition-all duration-300 ${
+            solid
+              ? 'bg-paper/95 backdrop-blur-xl border-b border-navy/10 shadow-sm'
+              : 'bg-transparent border-b border-transparent'
+          }`}
+        >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-24">
-          {/* Logo */}
+          {/* Logo — swaps white ⇄ blue with the scroll state */}
           <a
             href="#hero"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
             className="flex items-center gap-4 group"
           >
-            <img
-              src="/logo-blue.jpg"
-              alt="Imperial Cleaning Services"
-              className="h-16 w-16 md:h-20 md:w-20 object-cover rounded-full ring-1 ring-navy/10 group-hover:ring-imperialBlue/40 transition-all"
-            />
+            <div className="relative h-16 w-16 md:h-20 md:w-20">
+              {/* White logo — visible when transparent */}
+              <img
+                src="/logo-white.jpg"
+                alt="Imperial Cleaning Services"
+                className={`absolute inset-0 h-full w-full object-cover rounded-full ring-1 ring-white/15
+                            transition-opacity duration-300 ${solid ? 'opacity-0' : 'opacity-100'}`}
+              />
+              {/* Blue logo — visible when solid */}
+              <img
+                src="/logo-blue.jpg"
+                alt="Imperial Cleaning Services"
+                className={`absolute inset-0 h-full w-full object-cover rounded-full ring-1 ring-navy/10
+                            group-hover:ring-imperialBlue/40 transition-opacity duration-300
+                            ${solid ? 'opacity-100' : 'opacity-0'}`}
+              />
+            </div>
             <div className="hidden sm:flex flex-col leading-none">
-              <span className="font-display text-[20px] text-navy tracking-tight">Imperial Cleaning</span>
-              <span className="font-mono text-[9px] tracking-[0.25em] text-navy/50 uppercase mt-1.5">
+              <span className={`font-display text-[20px] tracking-tight transition-colors duration-300 ${
+                solid ? 'text-navy' : 'text-white'
+              }`}>
+                Imperial Cleaning
+              </span>
+              <span className={`font-mono text-[9px] tracking-[0.25em] uppercase mt-1.5 transition-colors duration-300 ${
+                solid ? 'text-navy/50' : 'text-white/60'
+              }`}>
                 Las Vegas · Since 2025
               </span>
             </div>
@@ -96,7 +121,9 @@ export default function Navbar() {
                     window.scrollTo({ top: 0, behavior: 'smooth' })
                   }
                 }}
-                className="nav-link relative text-[14px] font-medium text-navy/70 hover:text-navy transition-colors"
+                className={`nav-link relative text-[14px] font-medium transition-colors duration-300 ${
+                  solid ? 'text-navy/70 hover:text-navy' : 'text-white/80 hover:text-white'
+                }`}
               >
                 {link.label}
               </a>
@@ -107,13 +134,20 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-5">
             <a
               href="tel:7024184471"
-              className="hidden lg:flex items-center gap-2 text-navy font-medium text-sm hover:text-imperialBlue transition-colors"
+              className={`hidden lg:flex items-center gap-2 font-medium text-sm transition-colors duration-300 ${
+                solid ? 'text-navy hover:text-imperialBlue' : 'text-white hover:text-royal-200'
+              }`}
             >
               <Phone size={14} /> (702) 418-4471
             </a>
             <a
               href="#contact"
-              className="group inline-flex items-center gap-2 bg-navy text-white text-[12px] font-semibold tracking-wider uppercase px-5 py-3 hover:bg-imperialBlue transition-colors"
+              className={`group inline-flex items-center gap-2 text-[12px] font-semibold tracking-wider uppercase px-5 py-3
+                          transition-colors duration-300 ${
+                solid
+                  ? 'bg-navy text-white hover:bg-imperialBlue'
+                  : 'bg-white text-navy hover:bg-royal-100'
+              }`}
             >
               Request a Quote
               <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
@@ -123,7 +157,9 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             aria-label="Toggle menu"
-            className="md:hidden w-10 h-10 flex items-center justify-center text-navy"
+            className={`md:hidden w-10 h-10 flex items-center justify-center transition-colors duration-300 ${
+              solid ? 'text-navy' : 'text-white'
+            }`}
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -177,6 +213,7 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </motion.nav>
+      </div>
     </>
   )
 }
